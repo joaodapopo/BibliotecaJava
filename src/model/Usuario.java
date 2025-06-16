@@ -58,9 +58,4 @@ public class Usuario {
         this.tipo = tipo;
     }
 
-    // Opcional: para facilitar debug
-    @Override
-    public String toString() {
-        return nome + " (" + tipo + ")";
-    }
 }

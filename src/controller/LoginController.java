@@ -5,8 +5,8 @@ import javax.swing.JOptionPane;
 import model.Usuario;
 import model.UsuarioDAO;
 import view.LoginView;
-import view.TelaAdminView;
-import view.TelaUsuarioView;
+import view.AdminView;
+import view.UsuarioView;
 
 public class LoginController {
 
@@ -19,9 +19,9 @@ public class LoginController {
             telaLogin.dispose(); // fecha a tela de login
 
             if (usuario.getTipo().equalsIgnoreCase("admin")) {
-                new TelaAdminView(usuario);
+                new AdminView(usuario).setVisible(true); // ✅ passa o usuário
             } else {
-                new TelaUsuarioView(usuario);
+                new UsuarioView(usuario).setVisible(true); // ✅ passa o usuário
             }
 
         } else {

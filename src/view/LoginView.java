@@ -5,73 +5,99 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import controller.LoginController;
+import model.Usuario;
+import model.UsuarioDAO;
 
 public class LoginView extends JFrame {
     private JTextField txtMatricula;
     private JPasswordField txtSenha;
-    private JButton btnLogin, btnCadastro;
+    private JButton btnEntrar, btnCadastro;
 
     public LoginView() {
-        setTitle("Login - Sistema Biblioteca");
-        setSize(420, 300); // aumento de tamanho
+        setTitle("Login");
+        setSize(420, 320);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // centraliza na tela
+        setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        panel.setLayout(new GridBagLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-        JLabel lblTitulo = new JLabel("Bem Vindo à Biblioteca!");
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10); // margem interna
+
+        JLabel lblTitulo = new JLabel("Login da Biblioteca");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 22));
-        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(lblTitulo);
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        panel.add(Box.createVerticalStrut(25));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        panel.add(lblTitulo, gbc);
 
-        JLabel lblMatricula = new JLabel("Matrícula:");
-        txtMatricula = new JTextField();
-        txtMatricula.setMaximumSize(new Dimension(300, 30)); // largura fixa
-        panel.add(lblMatricula);
-        panel.add(txtMatricula);
+        // Campo Matrícula
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("Matrícula:"), gbc);
 
-        panel.add(Box.createVerticalStrut(15));
+        gbc.gridx = 1;
+        txtMatricula = new JTextField(20);
+        panel.add(txtMatricula, gbc);
 
-        JLabel lblSenha = new JLabel("Senha:");
-        txtSenha = new JPasswordField();
-        txtSenha.setMaximumSize(new Dimension(300, 30)); // largura fixa
-        panel.add(lblSenha);
-        panel.add(txtSenha);
+        // Campo Senha
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Senha:"), gbc);
 
-        panel.add(Box.createVerticalStrut(25));
+        gbc.gridx = 1;
+        txtSenha = new JPasswordField(20);
+        panel.add(txtSenha, gbc);
 
-        btnLogin = new JButton("Entrar");
-        btnLogin.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(btnLogin);
+        // Botão Entrar
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        btnEntrar = new JButton("Entrar");
+        panel.add(btnEntrar, gbc);
 
-        panel.add(Box.createVerticalStrut(15));
-
-        btnCadastro = new JButton("Cadastrar-se");
-        btnCadastro.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(btnCadastro);
-
-        // Ações dos botões
-        btnLogin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String matricula = txtMatricula.getText();
-                String senha = new String(txtSenha.getPassword());
-                LoginController.autenticar(LoginView.this, matricula, senha);
-            }
-        });
-
-        btnCadastro.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new CadastroView();
-            }
-        });
+        // Botão Cadastro
+        gbc.gridy = 4;
+        btnCadastro = new JButton("Criar Conta");
+        panel.add(btnCadastro, gbc);
 
         add(panel);
         setVisible(true);
+
+        // Lógica do botão "Entrar"
+        btnEntrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String matricula = txtMatricula.getText();
+                String senha = new String(txtSenha.getPassword());
+
+                UsuarioDAO dao = new UsuarioDAO();
+                Usuario usuario = dao.autenticar(matricula, senha);
+
+                if (usuario != null) {
+                    JOptionPane.showMessageDialog(LoginView.this, "Bem-vindo(a), " + usuario.getNome() + "!");
+                    dispose();
+                    // abrir tela de acordo com o tipo
+                    if (usuario.getTipo().equalsIgnoreCase("admin")) {
+                    	new AdminView(usuario).setVisible(true);
+                    } else {
+                    	new UsuarioView(usuario).setVisible(true);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(LoginView.this, "Matrícula ou senha incorretos.");
+                }
+            }
+        });
+
+        // Lógica do botão "Criar Conta"
+        btnCadastro.addActionListener(e -> {
+            dispose();
+            new CadastroView();
+        });
     }
 }

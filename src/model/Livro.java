@@ -1,18 +1,32 @@
 package model;
 
 public class Livro {
-	private String titulo;
-	private String autor;
-	private String isbn;
-	private String genero;
-	private int anoDeLançamento;
-	
-	public Livro(String titulo, String autor, String isbn, String genero, int anoDeLançamento) {
+    private int id;
+    private String titulo;
+    private String autor;
+    private int ano;
+    private boolean disponivel;
+    private String imagem;
+    private String matriculaUsuarioAlugou;
+    
+    public Livro() {};
+    
+	public Livro(int id, String titulo, String autor, int ano, boolean disponivel, String imagem, String matriculaUsuarioAlugou) {
+		this.id = id;
 		this.titulo = titulo;
 		this.autor = autor;
-		this.isbn = isbn;
-		this.genero = genero;
-		this.anoDeLançamento = anoDeLançamento;
+		this.ano = ano;
+		this.disponivel = disponivel;
+		this.imagem = imagem;
+		this.matriculaUsuarioAlugou = matriculaUsuarioAlugou;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getTitulo() {
@@ -31,29 +45,37 @@ public class Livro {
 		this.autor = autor;
 	}
 
-	public String getIsbn() {
-		return isbn;
+	public int getAno() {
+		return ano;
 	}
 
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
+	public void setAno(int ano) {
+		this.ano = ano;
 	}
 
-	public String getGenero() {
-		return genero;
+	public boolean isDisponivel() {
+		return disponivel;
 	}
 
-	public void setGenero(String genero) {
-		this.genero = genero;
-	}
-
-	public int getAnoDeLançamento() {
-		return anoDeLançamento;
-	}
-
-	public void setAnoDeLançamento(int anoDeLançamento) {
-		this.anoDeLançamento = anoDeLançamento;
+	public void setDisponivel(boolean disponivel) {
+		this.disponivel = disponivel;
 	}
 	
+	public String getImagem() {
+	    return imagem;
+	}
+
+	public void setImagem(String imagem) {
+	    this.imagem = imagem;
+	}
+	
+	public String getMatriculaUsuarioAlugou() {
+	    return matriculaUsuarioAlugou;
+	}
+
+	public void setMatriculaUsuarioAlugou(String matriculaUsuarioAlugou) {
+	    this.matriculaUsuarioAlugou = matriculaUsuarioAlugou;
+	}
+
 
 }
