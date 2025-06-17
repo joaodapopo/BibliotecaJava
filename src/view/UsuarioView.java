@@ -106,12 +106,6 @@ public class UsuarioView extends JFrame {
                 }
             });
             painel.add(btnAcao);
-        // Se outro usuário alugou, só mostra "Indisponível"
-        } else {
-            JLabel aviso = new JLabel("Indisponível");
-            aviso.setForeground(Color.RED);
-            aviso.setAlignmentX(Component.CENTER_ALIGNMENT);
-            painel.add(aviso);
         }
 
 
@@ -128,10 +122,4 @@ public class UsuarioView extends JFrame {
         return painel;
     }
 
-    // Não é mais necessário esse main
-    /*
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new UsuarioView().setVisible(true));
-    }
-    */
 }
