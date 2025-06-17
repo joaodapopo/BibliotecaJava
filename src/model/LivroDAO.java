@@ -6,18 +6,10 @@ import java.util.List;
 
 public class LivroDAO {
 
-    private Connection conectar() {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca", "root", "2009");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public boolean inserirLivro(Livro livro) {
         String sql = "INSERT INTO livros (titulo, autor, ano, disponivel, imagem) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = conectar();
+        try (Connection conn = DB.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, livro.getTitulo());
@@ -39,7 +31,7 @@ public class LivroDAO {
         List<Livro> livros = new ArrayList<>();
         String sql = "SELECT * FROM livros";
 
-        try (Connection conn = conectar();
+        try (Connection conn = DB.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -65,7 +57,7 @@ public class LivroDAO {
     public boolean atualizarLivro(Livro livro) {
         String sql = "UPDATE livros SET titulo = ?, autor = ?, ano = ?, disponivel = ?, imagem = ? WHERE id = ?";
 
-        try (Connection conn = conectar();
+        try (Connection conn = DB.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, livro.getTitulo());
@@ -87,7 +79,7 @@ public class LivroDAO {
     public boolean excluirLivro(int id) {
         String sql = "DELETE FROM livros WHERE id = ?";
 
-        try (Connection conn = conectar();
+        try (Connection conn = DB.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
@@ -102,7 +94,7 @@ public class LivroDAO {
 
     public boolean alugarLivro(int id, String matriculaUsuario) {
         String sql = "UPDATE livros SET disponivel = false, matricula_usuario = ? WHERE id = ?";
-        try (Connection conn = conectar();
+        try (Connection conn = DB.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, matriculaUsuario);
@@ -118,7 +110,7 @@ public class LivroDAO {
 
     public boolean devolverLivro(int id) {
         String sql = "UPDATE livros SET disponivel = true, matricula_usuario = NULL WHERE id = ?";
-        try (Connection conn = conectar();
+        try (Connection conn = DB.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
@@ -133,7 +125,7 @@ public class LivroDAO {
     public Livro buscarPorId(int id) {
         String sql = "SELECT * FROM livros WHERE id = ?";
 
-        try (Connection conn = conectar();
+        try (Connection conn = DB.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
