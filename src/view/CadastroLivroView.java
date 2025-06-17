@@ -2,6 +2,7 @@ package view;
 
 import model.Livro;
 import model.LivroDAO;
+import model.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,9 +18,13 @@ public class CadastroLivroView extends JFrame {
     private JCheckBox chkDisponivel;
     private JLabel lblImagemPreview;
     private String caminhoImagem = ""; // caminho relativo da imagem a ser salvo
+    private Usuario usuario;
+    private JFrame parent;
 
-    public CadastroLivroView() {
+    public CadastroLivroView(JFrame parent, Usuario usuario) {
         setTitle("Cadastro de Livro");
+        this.parent = parent;
+        this.usuario = usuario;
         setSize(500, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -121,13 +126,12 @@ public class CadastroLivroView extends JFrame {
 
         if (sucesso) {
             JOptionPane.showMessageDialog(this, "Livro cadastrado com sucesso!");
-            dispose(); // fecha janela
-        } else {
+            dispose(); // fecha janela de cadastro
+            parent.dispose(); // fecha a tela antiga do admin
+            new AdminView(usuario).setVisible(true); // abre nova tela com livros atualizados
+        	}
+        else {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar livro.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new CadastroLivroView().setVisible(true));
     }
 }

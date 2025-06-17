@@ -42,7 +42,7 @@ public class AdminView extends JFrame {
         // Botão adicionar novo livro
         JButton btnAdicionarLivro = new JButton("Adicionar Livro");
         btnAdicionarLivro.addActionListener(e -> {
-            new CadastroLivroView().setVisible(true);
+            new CadastroLivroView(this, usuario).setVisible(true);
         });
 
         JPanel painelInferior = new JPanel();
